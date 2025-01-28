@@ -23,7 +23,7 @@ const ContactForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          access_key: "YOUR-ACCESS-KEY", // You'll need to sign up at web3forms.com
+          access_key: "8b30b413-baff-44d6-8a09-8c9f53d7e976",
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
