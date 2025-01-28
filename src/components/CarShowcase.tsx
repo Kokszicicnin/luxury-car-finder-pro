@@ -1,18 +1,42 @@
+import { useEffect } from "react";
 import { Card } from "./ui/card";
 import { luxuryCars } from "../data/cars";
 
 const CarShowcase = () => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-in");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll(".car-card").forEach((card) => {
+      observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="container mx-auto py-12">
-      <h2 className="text-3xl font-playfair text-center mb-12">Our Luxury Collection</h2>
+      <h2 className="text-3xl font-playfair text-center mb-12 animate-fade-in">Our Luxury Collection</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {luxuryCars.map((car) => (
-          <Card key={car.id} className="overflow-hidden group">
+        {luxuryCars.map((car, index) => (
+          <Card 
+            key={car.id} 
+            className="car-card opacity-0 overflow-hidden group"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
             <div className="relative aspect-video">
               <img
                 src={car.image}
                 alt={`${car.brand} ${car.model}`}
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
               />
             </div>
             <div className="p-6 space-y-4">

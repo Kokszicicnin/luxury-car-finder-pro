@@ -21,7 +21,7 @@ export const luxuryCars: Car[] = [
     model: "Phantom",
     year: 2024,
     price: 460000,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?auto=format&fit=crop&q=80",
     specs: {
       engine: "6.75L V12",
       horsepower: 563,
@@ -36,7 +36,7 @@ export const luxuryCars: Car[] = [
     model: "Continental GT",
     year: 2024,
     price: 235000,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?auto=format&fit=crop&q=80",
     specs: {
       engine: "6.0L W12",
       horsepower: 650,

@@ -1,13 +1,16 @@
 const Hero = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80')",
-        }}
-      >
+      {/* Video Background */}
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          muted
+          loop
+          className="w-full h-full object-cover"
+        >
+          <source src="https://player.vimeo.com/external/373839510.sd.mp4?s=8c14fe0b52e02a8a8ac6635a973082de5b8b5466&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
 
