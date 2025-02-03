@@ -12,7 +12,7 @@ const Hero = () => {
           poster="/placeholder.svg"
         >
           <source 
-            src="https://player.vimeo.com/external/373839510.sd.mp4?s=8c14fe0b52e02a8a8ac6635a973082de5b8b5466&profile_id=164&oauth2_token_id=57447761" 
+            src="https://player.vimeo.com/external/492834071.sd.mp4?s=1445a53fd7d3ad7b973fa51bd5e614d69f46e789&profile_id=164&oauth2_token_id=57447761" 
             type="video/mp4" 
           />
           Your browser does not support the video tag.
