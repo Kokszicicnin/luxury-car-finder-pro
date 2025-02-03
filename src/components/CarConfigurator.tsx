@@ -1,11 +1,13 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
+const MODEL_URL = 'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/mclaren-p1/model.gltf';
+
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
-  const { scene } = useGLTF('https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/mclaren-p1/model.gltf');
+  const { scene } = useGLTF(MODEL_URL);
   
   // Apply materials and modifications to the loaded model
   scene.traverse((child: any) => {
@@ -18,6 +20,9 @@ const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
 
   return <primitive object={scene} scale={0.8} position={[0, -1, 0]} />;
 };
+
+// Pre-load the model
+useGLTF.preload(MODEL_URL);
 
 const CarConfigurator = () => {
   const [color, setColor] = useState('#000000');
@@ -60,7 +65,12 @@ const CarConfigurator = () => {
             <Canvas shadows camera={{ position: [5, 2, 5], fov: 50 }}>
               <ambientLight intensity={0.5} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-              <Suspense fallback={null}>
+              <Suspense fallback={
+                <mesh position={[0, 0, 0]}>
+                  <boxGeometry args={[1, 1, 1]} />
+                  <meshStandardMaterial color="gray" />
+                </mesh>
+              }>
                 <CarModel 
                   color={color}
                   wheelType={wheelType}
