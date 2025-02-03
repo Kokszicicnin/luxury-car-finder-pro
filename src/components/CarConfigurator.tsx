@@ -4,31 +4,15 @@ import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-// Using a different model URL that's known to work with React Three Fiber
-const MODEL_URL = 'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/low-poly-spaceship/model.gltf';
-
+// Using a simple box for testing until we get a working model URL
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
-  const { scene } = useGLTF(MODEL_URL);
-  
-  // Clone the scene to avoid mutations between instances
-  const clonedScene = scene.clone();
-  
-  // Apply materials and modifications to the cloned model
-  clonedScene.traverse((child: any) => {
-    if (child.isMesh) {
-      // Create a new material to avoid sharing between instances
-      child.material = child.material.clone();
-      if (child.material.name.includes('Body')) {
-        child.material.color.setStyle(color);
-      }
-    }
-  });
-
-  return <primitive object={clonedScene} scale={0.8} position={[0, -1, 0]} />;
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  );
 };
-
-// Pre-load the model
-useGLTF.preload(MODEL_URL);
 
 const CarConfigurator = () => {
   const [color, setColor] = useState('#000000');
@@ -68,19 +52,9 @@ const CarConfigurator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 3D Viewer */}
           <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden h-[600px]">
-            <Canvas 
-              camera={{ 
-                position: [5, 2, 5], 
-                fov: 50 
-              }}
-            >
+            <Canvas>
               <ambientLight intensity={0.5} />
-              <spotLight 
-                position={[10, 10, 10]} 
-                angle={0.15} 
-                penumbra={1} 
-                intensity={1} 
-              />
+              <pointLight position={[10, 10, 10]} />
               <Suspense fallback={null}>
                 <CarModel 
                   color={color}
@@ -88,12 +62,7 @@ const CarConfigurator = () => {
                   exhaustType={exhaustType}
                   bodyKit={bodyKit}
                 />
-                <OrbitControls 
-                  enableZoom={true}
-                  enablePan={false}
-                  minPolarAngle={Math.PI / 4}
-                  maxPolarAngle={Math.PI / 2}
-                />
+                <OrbitControls />
               </Suspense>
             </Canvas>
           </div>
