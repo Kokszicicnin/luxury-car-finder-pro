@@ -4,22 +4,27 @@ import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-// Using a different, publicly accessible model URL
-const MODEL_URL = 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/mclaren-p1/model.gltf';
+// Using a different model URL that's known to work with React Three Fiber
+const MODEL_URL = 'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/low-poly-spaceship/model.gltf';
 
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
   const { scene } = useGLTF(MODEL_URL);
   
-  // Apply materials and modifications to the loaded model
-  scene.traverse((child: any) => {
+  // Clone the scene to avoid mutations between instances
+  const clonedScene = scene.clone();
+  
+  // Apply materials and modifications to the cloned model
+  clonedScene.traverse((child: any) => {
     if (child.isMesh) {
+      // Create a new material to avoid sharing between instances
+      child.material = child.material.clone();
       if (child.material.name.includes('Body')) {
         child.material.color.setStyle(color);
       }
     }
   });
 
-  return <primitive object={scene} scale={0.8} position={[0, -1, 0]} />;
+  return <primitive object={clonedScene} scale={0.8} position={[0, -1, 0]} />;
 };
 
 // Pre-load the model
@@ -64,9 +69,10 @@ const CarConfigurator = () => {
           {/* 3D Viewer */}
           <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden h-[600px]">
             <Canvas 
-              shadows 
-              camera={{ position: [5, 2, 5], fov: 50 }}
-              gl={{ preserveDrawingBuffer: true }}
+              camera={{ 
+                position: [5, 2, 5], 
+                fov: 50 
+              }}
             >
               <ambientLight intensity={0.5} />
               <spotLight 
@@ -74,27 +80,21 @@ const CarConfigurator = () => {
                 angle={0.15} 
                 penumbra={1} 
                 intensity={1} 
-                castShadow 
               />
-              <Suspense fallback={
-                <mesh position={[0, 0, 0]}>
-                  <boxGeometry args={[1, 1, 1]} />
-                  <meshStandardMaterial color="gray" />
-                </mesh>
-              }>
+              <Suspense fallback={null}>
                 <CarModel 
                   color={color}
                   wheelType={wheelType}
                   exhaustType={exhaustType}
                   bodyKit={bodyKit}
                 />
+                <OrbitControls 
+                  enableZoom={true}
+                  enablePan={false}
+                  minPolarAngle={Math.PI / 4}
+                  maxPolarAngle={Math.PI / 2}
+                />
               </Suspense>
-              <OrbitControls 
-                enableZoom={true}
-                enablePan={false}
-                minPolarAngle={Math.PI / 4}
-                maxPolarAngle={Math.PI / 2}
-              />
             </Canvas>
           </div>
 
