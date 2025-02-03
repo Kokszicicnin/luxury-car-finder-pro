@@ -57,7 +57,7 @@ const CarConfigurator = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-black/95 fixed top-0 left-0 z-50 animate-fade-in">
+    <div className="w-full min-h-screen bg-black/95 fixed top-0 left-0 z-50">
       <div className="container mx-auto py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 3D Viewer */}
@@ -169,7 +169,7 @@ const CarConfigurator = () => {
 
             {/* Luxury Add-ons Panel */}
             {showLuxuryAddons && (
-              <div className="space-y-4 animate-fade-in">
+              <div className="space-y-4">
                 <h3 className="text-xl font-playfair text-white">Luxury Add-ons</h3>
                 <div className="space-y-2">
                   <label className="text-white">Start Button Cover</label>
