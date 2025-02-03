@@ -1,17 +1,22 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { useState } from 'react';
+import { OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei';
+import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
-  // Placeholder for the 3D car model
-  return (
-    <mesh>
-      <boxGeometry args={[2, 1, 4]} />
-      <meshStandardMaterial color={color} />
-    </mesh>
-  );
+  const { scene } = useGLTF('https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/mclaren-p1/model.gltf');
+  
+  // Apply materials and modifications to the loaded model
+  scene.traverse((child: any) => {
+    if (child.isMesh) {
+      if (child.material.name.includes('Body')) {
+        child.material.color.setStyle(color);
+      }
+    }
+  });
+
+  return <primitive object={scene} scale={0.8} position={[0, -1, 0]} />;
 };
 
 const CarConfigurator = () => {
@@ -52,17 +57,23 @@ const CarConfigurator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 3D Viewer */}
           <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden h-[600px]">
-            <Canvas>
+            <Canvas shadows camera={{ position: [5, 2, 5], fov: 50 }}>
               <ambientLight intensity={0.5} />
-              <pointLight position={[10, 10, 10]} />
-              <CarModel 
-                color={color}
-                wheelType={wheelType}
-                exhaustType={exhaustType}
-                bodyKit={bodyKit}
+              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
+              <Suspense fallback={null}>
+                <CarModel 
+                  color={color}
+                  wheelType={wheelType}
+                  exhaustType={exhaustType}
+                  bodyKit={bodyKit}
+                />
+              </Suspense>
+              <OrbitControls 
+                enableZoom={true}
+                enablePan={false}
+                minPolarAngle={Math.PI / 4}
+                maxPolarAngle={Math.PI / 2}
               />
-              <OrbitControls />
-              <PerspectiveCamera makeDefault position={[5, 5, 5]} />
             </Canvas>
           </div>
 
