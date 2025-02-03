@@ -4,7 +4,8 @@ import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-const MODEL_URL = 'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/mclaren-p1/model.gltf';
+// Using a different, publicly accessible model URL
+const MODEL_URL = 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/mclaren-p1/model.gltf';
 
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
   const { scene } = useGLTF(MODEL_URL);
@@ -62,9 +63,19 @@ const CarConfigurator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 3D Viewer */}
           <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden h-[600px]">
-            <Canvas shadows camera={{ position: [5, 2, 5], fov: 50 }}>
+            <Canvas 
+              shadows 
+              camera={{ position: [5, 2, 5], fov: 50 }}
+              gl={{ preserveDrawingBuffer: true }}
+            >
               <ambientLight intensity={0.5} />
-              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
+              <spotLight 
+                position={[10, 10, 10]} 
+                angle={0.15} 
+                penumbra={1} 
+                intensity={1} 
+                castShadow 
+              />
               <Suspense fallback={
                 <mesh position={[0, 0, 0]}>
                   <boxGeometry args={[1, 1, 1]} />
