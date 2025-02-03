@@ -1,16 +1,34 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { useState, Suspense } from 'react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-// Using a simple box for testing until we get a working model URL
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
   return (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} />
-    </mesh>
+    <group>
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[2, 1, 4]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      {/* Wheels */}
+      <mesh position={[-1, -0.5, 1]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+      <mesh position={[1, -0.5, 1]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+      <mesh position={[-1, -0.5, -1]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+      <mesh position={[1, -0.5, -1]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+    </group>
   );
 };
 
@@ -52,9 +70,15 @@ const CarConfigurator = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 3D Viewer */}
           <div className="lg:col-span-2 bg-gray-900 rounded-lg overflow-hidden h-[600px]">
-            <Canvas>
+            <Canvas
+              camera={{
+                position: [4, 4, 4],
+                fov: 50
+              }}
+            >
+              <color attach="background" args={['#1a1a1a']} />
               <ambientLight intensity={0.5} />
-              <pointLight position={[10, 10, 10]} />
+              <directionalLight position={[10, 10, 5]} intensity={1} />
               <Suspense fallback={null}>
                 <CarModel 
                   color={color}
@@ -62,8 +86,13 @@ const CarConfigurator = () => {
                   exhaustType={exhaustType}
                   bodyKit={bodyKit}
                 />
-                <OrbitControls />
+                <OrbitControls 
+                  enablePan={false}
+                  minDistance={5}
+                  maxDistance={10}
+                />
               </Suspense>
+              <gridHelper args={[20, 20, '#333333', '#222222']} />
             </Canvas>
           </div>
 
