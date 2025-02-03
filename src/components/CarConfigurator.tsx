@@ -7,37 +7,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 const CarModel = ({ color, wheelType, exhaustType, bodyKit }: any) => {
   return (
     <group>
+      {/* Car Body */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[2, 1, 4]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {/* Wheels */}
-      <mesh position={[-1, -0.5, 1]}>
-        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[-1, -0.5, 1]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} />
         <meshStandardMaterial color="#333" />
       </mesh>
-      <mesh position={[1, -0.5, 1]}>
-        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[1, -0.5, 1]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} />
         <meshStandardMaterial color="#333" />
       </mesh>
-      <mesh position={[-1, -0.5, -1]}>
-        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[-1, -0.5, -1]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} />
         <meshStandardMaterial color="#333" />
       </mesh>
-      <mesh position={[1, -0.5, -1]}>
-        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} rotation={[Math.PI / 2, 0, 0]} />
+      <mesh position={[1, -0.5, -1]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.2, 32]} />
         <meshStandardMaterial color="#333" />
       </mesh>
     </group>
   );
 };
-
-const CarConfigurator = () => {
-  const [color, setColor] = useState('#000000');
-  const [wheelType, setWheelType] = useState('standard');
-  const [exhaustType, setExhaustType] = useState('standard');
-  const [bodyKit, setBodyKit] = useState('standard');
-  const [showLuxuryAddons, setShowLuxuryAddons] = useState(false);
 
   const colors = [
     { name: 'Phantom Black', value: '#000000' },
@@ -63,6 +57,13 @@ const CarConfigurator = () => {
     { name: 'Sport', value: 'sport' },
     { name: 'Wide Body', value: 'wide' },
   ];
+
+const CarConfigurator = () => {
+  const [color, setColor] = useState('#000000');
+  const [wheelType, setWheelType] = useState('standard');
+  const [exhaustType, setExhaustType] = useState('standard');
+  const [bodyKit, setBodyKit] = useState('standard');
+  const [showLuxuryAddons, setShowLuxuryAddons] = useState(false);
 
   return (
     <div className="w-full min-h-screen bg-black/95 fixed top-0 left-0 z-50">
